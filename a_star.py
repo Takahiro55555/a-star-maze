@@ -176,11 +176,11 @@ class AStar:
             for col in range(self.map_size_col):
                 cell = data[row][col]
                 if cell == OBSTACLE_CODE: print("|||", end='')
-                elif self.start == (col, row): print("'S'", end='')
-                elif self.goal == (col, row): print("'G'", end='')
-                elif cell == OPENED_CODE: print(" O ", end='')
-                elif cell == CLOSED_CODE: print(" X ", end='')
-                elif cell == ROUTE_CODE: print(" @ ", end='')
+                elif self.start == (col, row): print("{S}", end='')
+                elif self.goal == (col, row): print("{G}", end='')
+                elif cell == OPENED_CODE: print("[O]", end='')
+                elif cell == CLOSED_CODE: print("[X]", end='')
+                elif cell == ROUTE_CODE: print("[@]", end='')
                 else: print("   ", end='')
             print('')  # 改行を入れる
 
