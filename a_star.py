@@ -155,7 +155,7 @@ class AStar:
             if self.map_data[y_tmp][x_tmp] == OBSTACLE_CODE: continue
             if not key in self.nodes_dict:
                 cost_h = self.heuristics_func((x_tmp, y_tmp), self.goal)
-                cost_a = parent_node.get_actual_cost() + 1  # ノードによって移動コストを変えることもデキル
+                cost_a = len(self.trace_node(parent_node))
                 node_tmp = Node(x_tmp, y_tmp)
                 node_tmp.set_parent_node(parent_node)
                 node_tmp.set_heuristics_cost(cost_h)
@@ -163,8 +163,12 @@ class AStar:
                 # node_tmp.calc_total_cost()
                 self.opened_list.append(node_tmp)
                 self.nodes_dict[key] = node_tmp
+            elif self.nodes_dict[key].get_status() != Status.CLOSED:
+                cost_a = len(self.trace_node(parent_node))
+                self.nodes_dict[key].set_actual_cost(cost_a)
         # 実コストとヒューリスティックコストの合計でソートする
         self.opened_list.sort(key=lambda n: n.get_total_cost())
+        # print(list(map(lambda n: n.get_total_cost(), self.opened_list)))
 
     def print_map(self, data=None, title=None):
         """

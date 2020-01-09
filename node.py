@@ -68,7 +68,7 @@ class Node:
         ----------
         cost : int
         """
-        self.actual_cost = int(cost)
+        self.actual_cost = cost
 
     def get_heuristics_cost(self):
         """
@@ -88,7 +88,7 @@ class Node:
         ----------
         cost : int
         """
-        self.heuristics_cost = int(cost)
+        self.heuristics_cost = cost
 
     def get_parent_node(self):
         """
