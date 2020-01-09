@@ -14,7 +14,10 @@ import csv
 from node import Node
 from status import Status
 
-OBSTACLE_CODE = '-1'
+OBSTACLE_CODE = "-1"
+OPENED_CODE = "-10"
+CLOSED_CODE = "-20"
+ROUTE_CODE = "-30"
 NODES_DICT_KEY_TEMPLATE = "%d,%d"  # ノードを格納する辞書のキーを作成するためのテンプレート
 
 class AStar:
@@ -73,14 +76,19 @@ class AStar:
         self.opened_list = [start_node]
         self.nodes_dict[key] = start_node
 
+        counter = 0
         goal_node = None
         while len(self.opened_list) != 0:
             node = self.opened_list.pop(0)
             node.set_status(Status.CLOSED)
+            self.open_nodes(node)
+            if self.show_process:
+                counter += 1
+                title = "Round: %s" % counter
+                self.print_map(data=self.gen_current_map(node), title=title)
             if node.get_coordinate() == self.goal:
                 goal_node = node
                 break
-            self.open_nodes(node)
         if self.show_process:
             if goal_node == None: print("result: failed")
             else: print("result: success")
@@ -88,6 +96,27 @@ class AStar:
         route_coordinate = list(map(lambda node: node.get_coordinate(), route_node))
         route_coordinate.reverse()
         return route_coordinate
+
+    def gen_current_map(self, node):
+        """
+        現在の探索の様子を可視化するためのデータを生成する
+        """
+        # 参照渡しによるマップデータの破壊を防ぐ
+        current_map_data = list(map(list, self.map_data))
+
+        for key in self.nodes_dict:
+            n = self.nodes_dict[key]
+            status = n.get_status()
+            x, y = n.get_coordinate()
+            if status == Status.OPEN:
+                current_map_data[y][x] = OPENED_CODE
+            elif status == Status.CLOSED:
+                current_map_data[y][x] = CLOSED_CODE
+        traced_node_list = self.trace_node(node)
+        for n in traced_node_list:
+            x, y = n.get_coordinate()
+            current_map_data[y][x] = ROUTE_CODE
+        return current_map_data
 
     def trace_node(self, node):
         """
@@ -149,6 +178,9 @@ class AStar:
                 if cell == OBSTACLE_CODE: print("|||", end='')
                 elif self.start == (col, row): print("'S'", end='')
                 elif self.goal == (col, row): print("'G'", end='')
+                elif cell == OPENED_CODE: print(" O ", end='')
+                elif cell == CLOSED_CODE: print(" X ", end='')
+                elif cell == ROUTE_CODE: print(" @ ", end='')
                 else: print("   ", end='')
             print('')  # 改行を入れる
 

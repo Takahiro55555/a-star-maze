@@ -28,8 +28,10 @@ def main():
     func_index = int(input())
     
     route = a_star.search(start, goal, heuristics_func_list[func_index])
-    a_star.print_map()
-    print(route)
+
+    for x, y in route:
+        print("(%s, %s) ->" % (x, y), end="")
+    print("")
 
 
 def calc_euclidean_distance(s, g):
