@@ -9,8 +9,25 @@ __date__ = "2020-01-09"
 from a_star import AStar
 
 def main():
-    a_star = AStar()
-    route = a_star.search((1, 1), (5, 6), calc_euclidean_distance)
+    heuristics_func_list = [calc_euclidean_distance]
+    
+    print("# 読み込むファイル名を入力してください(何も入力しない場合はmap.csvの読み込みを試みます)")
+    f_name = input()
+    if f_name == '': a_star = AStar()
+    else: a_star = AStar(f_name=f_name)
+
+    a_star.print_map()
+
+    print("# スタートの位置を空白区切りで入力してください(X, Yの順)")
+    start = tuple(map(int, input().split()))
+    print("# ゴールの位置を空白区切りで入力してください(X, Yの順)")
+    goal = tuple(map(int, input().split()))
+    print("# 使用するヒューリスティクス関数を以下の番号から指定してください")
+    for i in range(len(heuristics_func_list)):
+        print("#     %d: %s" % (i, heuristics_func_list[i].__name__))
+    func_index = int(input())
+    
+    route = a_star.search(start, goal, heuristics_func_list[func_index])
     a_star.print_map()
     print(route)
 

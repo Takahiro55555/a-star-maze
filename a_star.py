@@ -18,7 +18,7 @@ OBSTACLE_CODE = '-1'
 NODES_DICT_KEY_TEMPLATE = "%d,%d"  # ノードを格納する辞書のキーを作成するためのテンプレート
 
 class AStar:
-    def __init__(self, f_name="map.csv"):
+    def __init__(self, f_name="map.csv", show_process=True):
         """
         Parameters
         ----------
@@ -28,7 +28,12 @@ class AStar:
         self.load_map(f_name)
         self.map_size_row = len(self.map_data)
         self.map_size_col = len(self.map_data[0])
-
+        self.show_process = show_process
+        self.start = (-1, -1)
+        self.goal = (-1, -1)
+        if self.show_process:
+            print("file_name: %s" % f_name)
+            print("size: [%s, %s]" % (self.map_size_col, self.map_size_row))
 
     def search(self, s, g, heuristics_func):
         """
@@ -48,8 +53,13 @@ class AStar:
         self.start = tuple(s)
         self.goal = tuple(g)
         self.heuristics_func = heuristics_func
+        if self.show_process:
+            print("heuristics_name: %s" % self.heuristics_func.__name__)
+            print("start: [%d, %d]" % self.start)
+            print("goal: [%d, %d]" % self.goal)
+
         self.nodes_dict = {}  # 作成済みノード（フラグで管理しても良い）
-        
+
         # スタート地点のノードを作成
         cost_h = self.heuristics_func(self.start, self.goal)
         start_x, start_y = self.start
@@ -68,8 +78,9 @@ class AStar:
                 goal_node = node
                 break
             self.open_nodes(node)
-        if goal_node == None:
-            print("到達不能")
+        if self.show_process:
+            if goal_node == None: print("result: failed")
+            else: print("result: success")
         route_node = self.trace_node(node)
         route_coordinate = list(map(lambda node: node.get_coordinate(), route_node))
         route_coordinate.reverse()
@@ -123,14 +134,15 @@ class AStar:
         # 実コストとヒューリスティックコストの合計でソートする
         self.opened_list.sort(key=lambda n: n.get_total_cost())
 
-    def print_map(self):
+    def print_map(self, data=None, title=None):
         """
         迷路をコマンドラインに表示する
         """
-        #output = list(map(list, data))
+        if data == None: data = self.map_data
+        if title != None: print("\n%s" % title)
         for row in range(self.map_size_row):
             for col in range(self.map_size_col):
-                cell = self.map_data[row][col]
+                cell = data[row][col]
                 if cell == OBSTACLE_CODE: print("|||", end='')
                 elif self.start == (col, row): print("'S'", end='')
                 elif self.goal == (col, row): print("'G'", end='')
@@ -149,3 +161,14 @@ class AStar:
         with open(f_name) as f:
             reader = csv.reader(f)
             self.map_data = [row for row in reader]
+    
+    def get_map_size(self):
+        """
+        マップのサイズを取得する
+
+        Returns
+        -------
+        size : tuple
+            (col:int, row:int)の順
+        """
+        return (self.map_size_col, self.map_size_row)
