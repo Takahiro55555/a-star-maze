@@ -49,6 +49,9 @@ class AStar:
             ヒューリスティクス関数
         
         Returns
+        -------
+        route_coordinate : list
+            経路（tuple型の座標のリスト）
         """
         self.start = tuple(s)
         self.goal = tuple(g)
