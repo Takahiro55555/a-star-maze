@@ -29,8 +29,9 @@ def main():
     
     route = a_star.search(start, goal, heuristics_func_list[func_index])
 
+    print("route: ", end='')
     for x, y in route:
-        print("(%s, %s) ->" % (x, y), end="")
+        print("[%s, %s], " % (x, y), end='')
     print("")
 
 
