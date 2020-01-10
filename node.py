@@ -25,7 +25,6 @@ class Node:
         self.status = Status.OPEN
         self.actual_cost = 0
         self.heuristics_cost = 0
-        self.total_cost = 0  # 上記2つのコストを合計したもの（ソートの際に必要）
         self.parent_node = None
 
     def get_total_cost(self):
