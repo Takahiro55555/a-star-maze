@@ -9,7 +9,7 @@ __date__ = "2020-01-09"
 from a_star import AStar
 
 def main():
-    heuristics_func_list = [calc_euclidean_distance, calc_manhattan_distance, all_1]
+    heuristics_func_list = [calc_euclidean_distance, calc_manhattan_distance, all_0]
     
     print("# 読み込むファイル名を入力してください(何も入力しない場合はmap.csvの読み込みを試みます)")
     f_name = input()
@@ -34,11 +34,11 @@ def main():
         print("[%s, %s], " % (x, y), end='')
     print("")
 
-def all_1(s, g):
+def all_0(s, g):
     """
-    1を返す関数
+    0を返す関数
     """
-    return 1
+    return 0
 
 def calc_manhattan_distance(s, g):
     """
@@ -74,7 +74,7 @@ def calc_euclidean_distance(s, g):
     distance : int
         ２点間の距離
     """
-    return ((s[0] - g[0])**2 + (s[1] - g[1])**2)**0.5
+    return (((s[0] - g[0])**2 + (s[1] - g[1])**2)**0.5)
 
 if __name__ == "__main__":
     main()
