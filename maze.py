@@ -9,8 +9,10 @@ __date__ = "2020-01-09"
 from a_star import AStar
 
 def main():
+    # ヒューリスティクス関数のリスト
     heuristics_func_list = [calc_euclidean_distance, calc_manhattan_distance, all_0]
     
+    ## 標準入出力を利用し、対話的に設定を行う
     print("# 読み込むファイル名を入力してください(何も入力しない場合はmap.csvの読み込みを試みます)")
     f_name = input()
     if f_name == '': a_star = AStar()

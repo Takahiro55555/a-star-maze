@@ -4,6 +4,15 @@ A* アルゴリズムを使用し、最短経路を求める
     - 斜め移動禁止
     - 隣のマスへの移動コストは全て１
     - 四方を壁によって完全に囲まれていること
+
+標準出力は、リッチなビジュアライザーを作成する僅かな可能性に期待して、パースしやすいようにする
+具体的なルールは以下の通り
+    - パースのしやすさよりも見やすさのほうを優先
+    - ビジュアライズに関係ない出力は「#」でコメントアウト
+    - 表示するデータのラベルは半角英数字でスネークケース
+    - 表示するデータラベルと実際のデータは「:」で区切る
+    - 1行につき１つのデータ
+    - スペースは適宜入れる
 """
 
 __author__ = "Takahiro55555"
@@ -37,7 +46,7 @@ class AStar:
         self.goal = (-1, -1)
         if self.show_process:
             print("file_name: %s" % f_name)
-            print("size: [%s, %s]" % (self.map_size_col, self.map_size_row))
+            print("size: [%s, %s]" % (self.map_size_col-2, self.map_size_row-2))  # 壁を考慮
             print('')  # 改行を挿入
 
     def search(self, s, g, heuristics_func):
@@ -86,7 +95,7 @@ class AStar:
             self.open_nodes(node)
             if self.show_process:
                 counter += 1
-                title = "Round: %s\n%s" % (counter, "Open list(cost): %s" % str(list(map(lambda n: n.get_total_cost(), self.opened_list))))
+                title = "round: %s\n%s" % (counter, "open_nodes_cost: %s" % str(list(map(lambda n: n.get_total_cost(), self.opened_list))))
                 self.print_map(data=self.gen_current_map(node), title=title)
                 print('')  # 改行を挿入
             if node.get_coordinate() == self.goal:
