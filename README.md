@@ -26,10 +26,10 @@ Python3.6での動作を確認しています。
 
 ## 実行方法
 
-### 1. リポジトリをCloneする
+### 1. リポジトリをCloneする（初回のみ）
 
 ```
-$ git clone https://github.com/Takahiro55555/a-star-maze.git  # 初回のみ実行
+$ git clone https://github.com/Takahiro55555/a-star-maze.git
 $ cd a-star-maze
 ```
 
@@ -100,6 +100,7 @@ size: [8, 8]
 | route | スタートからゴールまでの最短経路をタイルの（探索失敗時も表示される） |
 
 表示されているマップの味方に関しては以下の表を参考にしてください。
+
 | タイル | 説明 |
 |:---:|:---|
 | `[||]` | 壁、障害物 |
@@ -110,6 +111,7 @@ size: [8, 8]
 | `[??]` | OPEN状態のノードを表し、`??`の部分はそのノードのコスト（小数点以下切捨） |
 | `[XX]` | CLOSED状態のノードを表す |
 
+以下実行例
 ```
 heuristics_name: calc_manhattan_distance
 start: [1, 1]
