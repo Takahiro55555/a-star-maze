@@ -169,6 +169,8 @@ class AStar:
             elif self.nodes_dict[key].get_status() != Status.CLOSED:
                 cost_a = parent_node.get_actual_cost() + 1
                 self.nodes_dict[key].set_actual_cost(cost_a)
+        # ヒューリスティクスコストの合計でソートする
+        self.opened_list.sort(key=lambda n: n.get_heuristics_cost())
         # 実コストとヒューリスティックコストの合計でソートする
         self.opened_list.sort(key=lambda n: n.get_total_cost())
 
@@ -182,13 +184,13 @@ class AStar:
             for col in range(self.map_size_col):
                 cell = data[row][col]
                 key = NODES_DICT_KEY_TEMPLATE % (col, row)
-                if cell == OBSTACLE_CODE: print("[|]", end='')
-                elif self.start == (col, row): print("{S}", end='')
-                elif self.goal == (col, row): print("{G}", end='')
-                elif cell == OPENED_CODE: print("[%d]" % int(self.nodes_dict[key].get_total_cost()), end='')
-                elif cell == CLOSED_CODE: print("[X]", end='')
-                elif cell == ROUTE_CODE: print("[@]", end='')
-                else: print("[ ]", end='')
+                if cell == OBSTACLE_CODE: print("[||]", end='')
+                elif self.start == (col, row): print("{SS}", end='')
+                elif self.goal == (col, row): print("{GG}", end='')
+                elif cell == OPENED_CODE: print("[%2d]" % int(self.nodes_dict[key].get_total_cost()), end='')
+                elif cell == CLOSED_CODE: print("[XX]", end='')
+                elif cell == ROUTE_CODE: print("[@@]", end='')
+                else: print("[  ]", end='')
             print('')  # 改行を入れる
 
     def load_map(self, f_name="map.csv"):
