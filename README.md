@@ -184,3 +184,7 @@ open_nodes_cost: [4, 6, 6, 6, 6, 6, 6]
 result: success
 route: [1, 1], [2, 1], [3, 1], [3, 2], [3, 3],
 ```
+
+---
+### 参考記事
+[よくわかるA*(A-star)アルゴリズム (Unity2Dのサンプルコードつき)](https://qiita.com/2dgames_jp/items/f29e915357c1decbc4b7) 
