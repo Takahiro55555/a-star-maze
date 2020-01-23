@@ -3,6 +3,7 @@ A* アルゴリズムを使用し、最短経路を求める
 条件は以下の通り
     - 斜め移動禁止
     - 隣のマスへの移動コストは全て１
+    - 四方を壁によって完全に囲まれていること
 """
 
 __author__ = "Takahiro55555"
@@ -102,6 +103,18 @@ class AStar:
     def gen_current_map(self, node):
         """
         現在の探索の様子を可視化するためのデータを生成する
+
+        Parameters
+        ----------
+        node : Node
+            現在の先頭ノード
+            このノードからスタートまでの経路が現時点の経路として設定される
+        
+        Returns
+        -------
+        map_date : list
+            生成結果
+            self.print_map関数に渡すと良い感じに表示してくれる
         """
         # 参照渡しによるマップデータの破壊を防ぐ
         current_map_data = list(map(list, self.map_data))
@@ -169,7 +182,7 @@ class AStar:
             elif self.nodes_dict[key].get_status() != Status.CLOSED:
                 cost_a = parent_node.get_actual_cost() + 1
                 self.nodes_dict[key].set_actual_cost(cost_a)
-        # ヒューリスティクスコストの合計でソートする
+        # ヒューリスティクスコストのでソートする
         self.opened_list.sort(key=lambda n: n.get_heuristics_cost())
         # 実コストとヒューリスティックコストの合計でソートする
         self.opened_list.sort(key=lambda n: n.get_total_cost())
@@ -177,6 +190,18 @@ class AStar:
     def print_map(self, data=None, title=None):
         """
         迷路をコマンドラインに表示する
+
+        Parameters
+        ----------
+        data : iterable
+            表示したい迷路データ。何も指定しない場合は、現在の迷路の状況を表示する
+
+        title : str
+            タイトルを設定する。（指定しなくてもOK）
+        
+        Returns
+        -------
+            None
         """
         if data == None: data = self.map_data
         if title != None: print("%s" % title)
