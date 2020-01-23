@@ -37,6 +37,7 @@ class AStar:
         if self.show_process:
             print("file_name: %s" % f_name)
             print("size: [%s, %s]" % (self.map_size_col, self.map_size_row))
+            print('')  # 改行を挿入
 
     def search(self, s, g, heuristics_func):
         """
@@ -84,8 +85,9 @@ class AStar:
             self.open_nodes(node)
             if self.show_process:
                 counter += 1
-                title = "Round: %s" % counter
+                title = "Round: %s\n%s" % (counter, "Open list(cost): %s" % str(list(map(lambda n: n.get_total_cost(), self.opened_list))))
                 self.print_map(data=self.gen_current_map(node), title=title)
+                print('')  # 改行を挿入
             if node.get_coordinate() == self.goal:
                 goal_node = node
                 break
@@ -132,6 +134,7 @@ class AStar:
         route : tuple
             Nodeクラスのインスタンスのリスト
         """
+        if node == None: return []
         route = [node]
         while node.get_parent_node() != None:
             node = node.get_parent_node()
@@ -168,21 +171,21 @@ class AStar:
                 self.nodes_dict[key].set_actual_cost(cost_a)
         # 実コストとヒューリスティックコストの合計でソートする
         self.opened_list.sort(key=lambda n: n.get_total_cost())
-        # print(list(map(lambda n: n.get_total_cost(), self.opened_list)))
 
     def print_map(self, data=None, title=None):
         """
         迷路をコマンドラインに表示する
         """
         if data == None: data = self.map_data
-        if title != None: print("\n%s" % title)
+        if title != None: print("%s" % title)
         for row in range(self.map_size_row):
             for col in range(self.map_size_col):
                 cell = data[row][col]
+                key = NODES_DICT_KEY_TEMPLATE % (col, row)
                 if cell == OBSTACLE_CODE: print("|||", end='')
                 elif self.start == (col, row): print("{S}", end='')
                 elif self.goal == (col, row): print("{G}", end='')
-                elif cell == OPENED_CODE: print("[O]", end='')
+                elif cell == OPENED_CODE: print("[%d]" % self.nodes_dict[key].get_total_cost(), end='')
                 elif cell == CLOSED_CODE: print("[X]", end='')
                 elif cell == ROUTE_CODE: print("[@]", end='')
                 else: print("   ", end='')
